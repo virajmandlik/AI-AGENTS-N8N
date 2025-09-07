@@ -1,0 +1,228 @@
+{
+  "name": "recipeInstructorAgent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -464,
+        -144
+      ],
+      "id": "08b061e6-f722-4ebc-aadf-8752cc315bef",
+      "name": "When chat message received",
+      "webhookId": "42335631-f1ad-4db5-a05e-b3dc8a8a5845"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "<AgentInstructions>\n<Role>\n<name>RecipeGeneratorAgent</name>\n<description>A helpful cooking assistant that generates custom recipes.</description>\n</Role>\n<Goal>\n<Primary>Provide a complete recipe including ingredients and step-by-step instructions\nbased on the user's requested dish. </Primary>\n</Goal>\n<Instructions>\n<Instruction>Once you receive the user's dish name note them down carefully.\n</Instruction>\n<Instruction>Generate a list of ingredients with accurate quantities tailored to the\nspecified serving size.</Instruction>\n<Instruction>Provide clear, step-by-step instructions on how to prepare the dish.\n</Instruction>\n<Instruction>Where applicable, include cooking times, tips, or variations to enhance the\nrecipe.</Instruction>\n</Instructions>\n</AgentInstructions>\n\n<Examples>\n<Example>\n<UserInput>\nChai\n</UserInput>\n<UserOutput>\n{\n  \"recipe\": {\n    \"title\": \"Classic Indian Masala Chai\",\n    \"description\": \"A delightful recipe for classic Indian Masala Chai, perfect for a cozy morning or an afternoon pick-me-up! This recipe makes about 2 servings.\",\n    \"servings\": 2,\n    \"ingredients\": \"Water: 1 cup (240ml); Milk: 1 cup (240ml) (whole milk or creamy non-dairy like oat/cashew milk); Black Tea: 2 teaspoons loose leaf (Assam/Darjeeling) or 2 tea bags; Sugar: 1-2 tablespoons (to taste); Fresh Ginger: 1/2 inch piece, grated/crushed; Green Cardamom Pods: 3-4 pods, lightly crushed; Cinnamon Stick: 1/2 inch piece (optional); Cloves: 2-3 whole (optional); Black Peppercorns: 2-3 whole (optional)\",\n    \"equipment\": \"Small saucepan; Fine-mesh sieve\",\n    \"instructions\": \"1. Lightly crush cardamom, ginger, cinnamon, cloves, and peppercorns. 2. Boil water with crushed spices in a saucepan. 3. Simmer spices for 2-3 minutes. 4. Add tea leaves/bags and milk; bring to boil. 5. Simmer for another 2-3 minutes until rich brown color develops. 6. Stir in sugar until dissolved; adjust sweetness. 7. Strain into serving cups using sieve. 8. Serve hot and enjoy.\",\n    \"tips_variations\": \"For stronger chai, simmer for up to 5 minutes. Adjust sugar or use honey/jaggery. Use oat or cashew milk for non-dairy option. Add more ginger/pepper for spicier chai or more cardamom for floral notes. Pre-made chai masala (1/2 tsp) can be used instead of whole spices.\"\n  }\n}\n\n\n</UserOutput>\n</Example>\n</Examples>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        -144
+      ],
+      "id": "5d2fd9e3-b5f0-45eb-8863-afad4b150c5b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        64
+      ],
+      "id": "1735fa8d-f1ee-49d6-b446-a0adb2e8bd8e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nE9xsYmNQtcliBDM",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appRhBJmizUSquXqh",
+          "mode": "list",
+          "cachedResultName": "BASE 01 N8N",
+          "cachedResultUrl": "https://airtable.com/appRhBJmizUSquXqh"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7jbcFnC1mLE6Ak",
+          "mode": "list",
+          "cachedResultName": "Recipies",
+          "cachedResultUrl": "https://airtable.com/appRhBJmizUSquXqh/tbl7jbcFnC1mLE6Ak"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.output.recipe.title }}",
+            "description": "={{ $json.output.recipe.description }}",
+            "ingredients": "={{ $json.output.recipe.ingredients }}",
+            "equipment": "={{ $json.output.recipe.equipment }}",
+            "instructions": "={{ $json.output.recipe.instructions }}"
+          },
+          "matchingColumns": [
+            "Recipies"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ingredients",
+              "displayName": "ingredients",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "equipment",
+              "displayName": "equipment",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "instructions",
+              "displayName": "instructions",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        -144
+      ],
+      "id": "7acdfcee-1032-43e7-9f22-9f9945f9acc1",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "W5jjYqWuyjOjmymA",
+          "name": "Airtable Personal Access Token account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"recipe\": {\n    \"title\": \"Classic Indian Masala Chai\",\n    \"description\": \"A delightful recipe for classic Indian Masala Chai, perfect for a cozy morning or an afternoon pick-me-up! This recipe makes about 2 servings.\",\n    \"servings\": 2,\n    \"ingredients\": \"Water: 1 cup (240ml); Milk: 1 cup (240ml) (whole milk or creamy non-dairy like oat/cashew milk); Black Tea: 2 teaspoons loose leaf (Assam/Darjeeling) or 2 tea bags; Sugar: 1-2 tablespoons (to taste); Fresh Ginger: 1/2 inch piece, grated/crushed; Green Cardamom Pods: 3-4 pods, lightly crushed; Cinnamon Stick: 1/2 inch piece (optional); Cloves: 2-3 whole (optional); Black Peppercorns: 2-3 whole (optional)\",\n    \"equipment\": \"Small saucepan; Fine-mesh sieve\",\n    \"instructions\": \"1. Lightly crush cardamom, ginger, cinnamon, cloves, and peppercorns. 2. Boil water with crushed spices in a saucepan. 3. Simmer spices for 2-3 minutes. 4. Add tea leaves/bags and milk; bring to boil. 5. Simmer for another 2-3 minutes until rich brown color develops. 6. Stir in sugar until dissolved; adjust sweetness. 7. Strain into serving cups using sieve. 8. Serve hot and enjoy.\",\n    \"tips_variations\": \"For stronger chai, simmer for up to 5 minutes. Adjust sugar or use honey/jaggery. Use oat or cashew milk for non-dairy option. Add more ginger/pepper for spicier chai or more cardamom for floral notes. Pre-made chai masala (1/2 tsp) can be used instead of whole spices.\"\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        64
+      ],
+      "id": "feff7b92-1aa9-4aee-a60f-8043f4e0998b",
+      "name": "Structured Output Parser"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "name": "MCP SERVER",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "9eca6cdc-7f4f-4199-8cbd-8ca1ce26eec0"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0090d9a2-56d3-4ebb-b059-d6cb0c71cf4a",
+      "name": "MCP Server Trigger",
+      "webhookId": "9eca6cdc-7f4f-4199-8cbd-8ca1ce26eec0"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        8,
+        224
+      ],
+      "id": "0e8fd69a-71f1-41bc-8389-d3c2331d718b",
+      "name": "Get many messages in Gmail",
+      "webhookId": "2a1e938e-9ff9-4a23-8408-bad8ab34992b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "rLW4kCaXDYzJjz4T",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        136,
+        224
+      ],
+      "id": "2430fe3c-1496-4e4b-bdbb-5553f1ef2168",
+      "name": "Send a message in Gmail",
+      "webhookId": "8f65d8e9-871e-4c6f-acfa-18ed76037b59",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "rLW4kCaXDYzJjz4T",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
